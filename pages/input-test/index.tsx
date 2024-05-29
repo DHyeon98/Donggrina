@@ -5,7 +5,7 @@ import FormInput from '@/components/common/Input';
 function App() {
   const methods = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log(data);
   };
 

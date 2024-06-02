@@ -12,6 +12,25 @@
   --red: #d6173a;
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  src: url('/fonts/Pretendard-Bold.subset.woff2') format('woff2');
+  font-style: bold;
+}
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 500;
+  src: url('/fonts/Pretendard-Medium.subset.woff2') format('woff2');
+  font-style: medium;
+}
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  src: url('/fonts/Pretendard-Regular.subset.woff2') format('woff2');
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;

@@ -4,7 +4,7 @@
 export default function Home() {
   return (
     <>
-      <div style={{ paddingTop: '54px' }}>배포 테스트</div>
+      <div style={{ paddingTop: '54px' }}>배포 테스트1</div>
     </>
   );
 }

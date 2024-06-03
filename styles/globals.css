@@ -35,29 +35,34 @@
   font-family: 'Pretendard';
   font-weight: 400;
   font-display: block;
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css')
-    format('truetype');
+  src:
+    local('Pretendard'),
+    url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css')
+      format('truetype');
 }
 @font-face {
   font-family: 'Pretendard';
   font-weight: 500;
   font-display: block;
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css')
-    format('truetype');
+  src:
+    local('Pretendard'),
+    url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css')
+      format('truetype');
 }
 @font-face {
   font-family: 'Pretendard';
   font-weight: 700;
   font-display: block;
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css')
-    format('truetype');
+  src:
+    local('Pretendard'),
+    url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css')
+      format('truetype');
 }
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Pretendard';
-  font-display: block;
 }
 ul,
 ol {

@@ -1,16 +1,5 @@
-:root {
-  --global-width: 430px;
-  --main-color: #8fcc93;
-  --button-color: #021508;
-  --text-color: #000;
-  --white: #fff;
-  --tertiary: #f6f6f6;
-  --kakao-background: #f8e049;
-  --kakao-color: #371c1d;
-  --google-color: #757575;
-  --google-border: #eeeeee;
-  --red: #d6173a;
-}
+@import './color.css';
+@import './font.css';
 
 /* @font-face {
   font-family: 'Pretendard';
@@ -70,6 +59,7 @@ ol {
 }
 a {
   text-decoration: none;
+  color: inherit;
 }
 button {
   background: none;
@@ -77,22 +67,15 @@ button {
   font: inherit;
   color: inherit;
   cursor: pointer;
-  outline: none;
+  /* outline: none; */
   box-shadow: none;
-}
-html,
-body,
-#__wrap,
-#__next {
-  height: 100%;
 }
 
 #__container {
   max-width: var(--global-width);
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 0 24px;
   border: 1px solid #ddd;
   border-top: none;
   border-bottom: none;

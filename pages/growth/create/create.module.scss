@@ -4,8 +4,9 @@
   .petSelector {
     color: var(--text-color-gray);
     letter-spacing: 0.64px;
+    font-weight: 700;
     .petLabelContainer {
-      padding-top: 16px;
+      padding: 16px 0;
       display: flex;
       gap: 17px;
     }

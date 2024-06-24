@@ -33,13 +33,13 @@ const setupInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.response.use(
     (response) => response,
     async (error) => {
-      const token = getCookie('accessToken');
+      const token = getCookie('AccessToken');
       const originalRequest = error.config;
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         if (!isRefreshing) {
           isRefreshing = true;
-          const refresh = getCookie('refreshToken');
+          const refresh = getCookie('RefreshToken');
           const data = {
             accessToken: token!.toString(),
             refreshToken: refresh!.toString(),
@@ -47,15 +47,15 @@ const setupInterceptors = (instance: AxiosInstance) => {
           try {
             const response = await reissuanceAt(data);
             const newAt = response.data.data;
-            setCookie('accessToken', newAt);
+            setCookie('AccessToken', newAt);
             axios.defaults.headers['Authorization'] = `Bearer ${newAt}`;
             originalRequest.headers.Authorization = `Bearer ${newAt}`;
             isRefreshing = false;
             return axios(originalRequest);
           } catch (error) {
             alert('토큰 갱신을 실패하였습니다. 로그인 페이지로 이동합니다.');
-            deleteCookie('refreshToken');
-            deleteCookie('accessToken');
+            deleteCookie('RefreshToken');
+            deleteCookie('AccessToken');
             deleteCookie('isFamily');
             window.location.href = '/';
             isRefreshing = false;

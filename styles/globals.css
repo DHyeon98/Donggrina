@@ -52,7 +52,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Pretendard';
-  font-weight: 500;
 }
 ul,
 ol {
@@ -75,6 +74,7 @@ html,
 body {
   overflow-y: hidden;
   background-color: #e7fbe9;
+  font-weight: 500;
 }
 
 #__container {

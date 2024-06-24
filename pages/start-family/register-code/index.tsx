@@ -9,6 +9,7 @@ import Button from '@/components/common/button/button';
 import axios from 'axios';
 import myPageApiInstance from '@/apis/my/user';
 import SwitchScreen from '@/components/framer/switch-screen/switch-screen';
+import { setCookie } from 'cookies-next';
 export default function RegisterCode() {
   const myProfile = myPageApiInstance;
   const myFamilyApi = new MyFamilyApi();
@@ -23,6 +24,7 @@ export default function RegisterCode() {
       await myFamilyApi.myFamilyAddMember(data).then(async () => {
         const response = await myProfile.getProfile();
         localStorage.setItem('userId', response.id.toString());
+        setCookie('isFamily', true);
         router.replace('/family');
       });
     } catch (error) {

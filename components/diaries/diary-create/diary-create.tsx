@@ -1,11 +1,19 @@
-import React, { useRef, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React, { useRef, useState, useEffect } from 'react';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import classNames from 'classnames';
 import { WEATHER_TYPES } from '@/lib/constants/diaries-constants';
 import { postDiariesImage, postDiaries } from '@/api/diaries/';
 import styles from './diary-create.module.scss';
+import useCalenderDateStore from '@/store/calendar.store';
+import { convertToLocalDate } from '@/utils/convert-local-date';
+import usePetsQuery from '@/hooks/queries/calendar/use-pets-query';
+import { useQueryClient } from '@tanstack/react-query';
+import PetSelect from '@/components/diaries/pet-select';
+import PetCheckbox from '@/components/diaries/pet-checkbox';
+import ImageSkeleton from '@/components/skeleton/image/';
+import { useRouter } from 'next/router';
 
-interface DiaryData {
+export interface DiaryData {
   content: string;
   weather: string;
   isShare: boolean;
@@ -14,14 +22,15 @@ interface DiaryData {
   images: number[];
 }
 
-const DiaryCreate = () => {
+const DiaryCreate: React.FC = () => {
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     formState: { errors, isValid },
-  } = useForm<DiaryData>({
+    resetField,
+  } = useForm<DiaryData & FieldValues>({
     defaultValues: {
       content: '',
       weather: '',
@@ -32,38 +41,31 @@ const DiaryCreate = () => {
     },
   });
 
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const year = useCalenderDateStore.use.year().toString();
+  const month = (useCalenderDateStore.use.month() + 1).toString().padStart(2, '0');
+  const date = useCalenderDateStore.use.date().toString().padStart(2, '0');
+  const localDate = convertToLocalDate({ year, month, day: date });
+
+  useEffect(() => {
+    setValue('date', localDate);
+  }, [localDate, setValue]);
+
   const selectedWeather = watch('weather');
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [imageIds, setImageIds] = useState<number[]>([]);
   const fileInputRefs = useRef<HTMLInputElement[]>([]);
 
-  // const handleImageChange = (index: number) => async (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = event.target.files;
-  //   if (files && files.length > 0) {
-  //     const selectedFiles = Array.from(files);
-  //     const formData = new FormData();
-  //     selectedFiles.forEach((file) => {
-  //       formData.append('images', file);
-  //     });
-
-  //     try {
-  //       const { imageIds } = await postDiariesImage({ images: selectedFiles });
-  //       const newImageIds = [...imageIds];
-  //       newImageIds[index] = imageIds[index];
-  //       setImageIds(newImageIds);
-
-  //       const fileReader = new FileReader();
-  //       fileReader.onload = () => {
-  //         const newImagePreviews = [...imagePreviews];
-  //         newImagePreviews[index] = fileReader.result as string;
-  //         setImagePreviews(newImagePreviews);
-  //       };
-  //       fileReader.readAsDataURL(selectedFiles[0]);
-  //     } catch (error) {
-  //       console.error('Error uploading image:', error);
-  //     }
-  //   }
-  // };
+  const watchDate = watch('date');
+  useEffect(() => {
+    if (watchDate) {
+      const [year, month, day] = watchDate.split('-');
+      const convertedDate = convertToLocalDate({ year, month, day });
+      setValue('date', convertedDate);
+    }
+  }, [watchDate, setValue]);
 
   const handleImageChange = (index: number) => async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -71,9 +73,9 @@ const DiaryCreate = () => {
       const fileArray = Array.from(files);
 
       try {
-        const { imageIds } = await postDiariesImage({ images: fileArray });
+        const response = await postDiariesImage({ images: fileArray });
         const newImageIds = [...imageIds];
-        newImageIds[index] = imageIds[index];
+        newImageIds[index] = response.data[0];
         setImageIds(newImageIds);
 
         const fileReader = new FileReader();
@@ -84,24 +86,70 @@ const DiaryCreate = () => {
         };
         fileReader.readAsDataURL(files[0]);
       } catch (error) {
-        console.error('faile uploade image:', error);
+        console.error('failed to upload image:', error);
       }
     }
   };
 
-  const onSubmit: SubmitHandler<DiaryData> = async (data) => {
+  const onSubmit: SubmitHandler<DiaryData & FieldValues> = async (data) => {
     const completeData = { ...data, images: imageIds };
     try {
       const response = await postDiaries(completeData);
       console.log('Diary posted successfully:', response);
+      queryClient.invalidateQueries({ queryKey: ['diaries'] });
+      router.push('/diaries');
     } catch (error) {
-      console.error('faile post diary:', error);
+      console.error('failed to post diary:', error);
+    }
+  };
+
+  const { data: pets, isLoading, isError, error } = usePetsQuery();
+  const [selectedPets, setSelectedPets] = useState<number[]>([]);
+
+  if (isError) return <p>Error: {error.message}</p>;
+
+  const handleTogglePet = (petId: number) => {
+    setSelectedPets((prevSelectedPets) =>
+      prevSelectedPets.includes(petId) ? prevSelectedPets.filter((id) => id !== petId) : [...prevSelectedPets, petId],
+    );
+  };
+
+  const handleClickAll = () => {
+    if (selectedPets.length === pets.length) {
+      setSelectedPets([]);
+      resetField('pets');
+    } else {
+      const allPetIds = pets.map((pet) => pet.petId);
+      setSelectedPets(allPetIds);
+      setValue('pets', allPetIds);
     }
   };
 
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.petSelect}>
+          <PetSelect selectAll={handleClickAll} title="반려동물 선택">
+            <div className={styles.pets}>
+              {isLoading ? (
+                <ImageSkeleton />
+              ) : (
+                pets.map((pet) => (
+                  <PetCheckbox
+                    key={pet.petId}
+                    register={register}
+                    petId={pet.petId}
+                    petName={pet.name}
+                    petImage={pet.imageUrl}
+                    selectedPets={selectedPets}
+                    onTogglePet={handleTogglePet}
+                  />
+                ))
+              )}
+            </div>
+          </PetSelect>
+        </div>
+
         <textarea
           {...register('content', { required: '*내용을 입력해주세요.' })}
           className={styles.content}
@@ -135,14 +183,16 @@ const DiaryCreate = () => {
           {Array.from({ length: 5 }).map((_, index) => (
             <div key={index}>
               <input
-                ref={(el) => (fileInputRefs.current[index] = el!)}
+                ref={(el) => {
+                  fileInputRefs.current[index] = el!;
+                }}
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange(index)}
                 hidden
               />
               <img
-                src={imagePreviews[index] || '/images/diaries/imageupload-default.svg'} // 미리보기 또는 기본 이미지
+                src={imagePreviews[index] || '/images/diaries/imageupload-default.svg'}
                 alt="Upload preview"
                 className={styles.images}
                 onClick={() => fileInputRefs.current[index].click()}

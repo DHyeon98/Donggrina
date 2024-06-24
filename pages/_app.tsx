@@ -8,7 +8,7 @@ import { useState, useRef } from 'react';
 import usePullReload from '@/hooks/use-pull-to-refresh';
 import Spinner from '@/components/spinner/spinner';
 import Header from '@/components/common/Header';
-import { AnimatePresence } from 'framer-motion';
+// import { AnimatePresence } from 'framer-motion';
 import BackGround from '@/components/background/background';
 
 declare global {
@@ -32,11 +32,11 @@ export default function App({ Component, pageProps }: AppProps) {
             <main id="__container" ref={containerRef}>
               <Header router={router} />
               {isDragging && <Spinner />}
-              <AnimatePresence mode="wait">
-                <div key={router.route}>
-                  <Component {...pageProps} key={router.route} />
-                </div>
-              </AnimatePresence>
+              {/* <AnimatePresence mode="wait"> */}
+              <div key={router.route}>
+                <Component {...pageProps} key={router.route} />
+              </div>
+              {/* </AnimatePresence> */}
               {isNav(router) && <Nav />}
             </main>
           </BackGround>

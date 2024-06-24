@@ -2,12 +2,14 @@ import axios, { AxiosInstance } from 'axios';
 import { getCookie, setCookie, deleteCookie } from 'cookies-next';
 import { reissuanceAt } from './auth';
 
+const token = getCookie('AccessToken');
+
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
   },
-  withCredentials: true,
 });
 
 export const axiosFileInstance = axios.create({
@@ -15,7 +17,6 @@ export const axiosFileInstance = axios.create({
   headers: {
     'Content-Type': 'multipart/form-data',
   },
-  withCredentials: true,
 });
 
 let isRefreshing = false;

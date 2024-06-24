@@ -22,7 +22,7 @@ export default function CalendarTodos({ dailyTodos }: CalendarTodosProps) {
 
   return (
     <>
-      <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {dailyTodos.map((todo, index) => (
           <motion.li key={todo.id} custom={index} variants={horizontalVariants} initial="hidden" animate="visible">
             <CalendarTodo todo={todo} />

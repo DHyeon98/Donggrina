@@ -7,7 +7,7 @@ const { PROTECTED_PAGES, PUBLIC_PAGES, NON_FAMILY_PAGES, FAMILY_PAGES } = new Mi
 export default function middleware(request: NextRequest) {
   const { cookies, nextUrl } = request;
   const path = nextUrl.pathname;
-  const hasCookie = cookies.has('AccessToken');
+  const hasCookie = cookies.has('accessToken');
   const hasFamily = cookies.get('isFamily')?.value === 'true';
   const isProtectedPage = PROTECTED_PAGES.some((page) => path.startsWith(page));
   const isPublicPage = PUBLIC_PAGES.includes(path);

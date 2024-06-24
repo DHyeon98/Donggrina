@@ -22,11 +22,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const {
     params: { calendarId },
     req: {
-      cookies: { AccessToken },
+      cookies: { accessToken },
     },
   } = context as Params;
 
-  const data = await fetchTodoById(calendarId, AccessToken);
+  const data = await fetchTodoById(calendarId, accessToken);
 
   return { props: { todo: data } };
 }

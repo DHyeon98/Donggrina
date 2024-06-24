@@ -2,17 +2,23 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 118px;
+  width: 214px;
   margin: 0 auto;
   .imgBox {
     position: relative;
-    width: 100%;
+    width: 118px;
     height: 123px;
+    margin: 0 auto;
   }
   .text {
     text-align: center;
     color: #bdbdbd;
     font-size: 14px;
+    line-height: 21px;
     word-break: keep-all;
+    b {
+      font-weight: 500;
+      color: #32a753;
+    }
   }
 }

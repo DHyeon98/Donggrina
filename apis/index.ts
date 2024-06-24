@@ -21,7 +21,7 @@ let isRefreshing = false;
 const setupInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.request.use(
     (config) => {
-      const token = getCookie('accessToken');
+      const token = getCookie('AccessToken');
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
       }

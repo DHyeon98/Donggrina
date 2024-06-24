@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { PropsWithChildren } from 'react';
 
 export default function SwitchScreen({ children }: PropsWithChildren) {
@@ -18,14 +18,16 @@ export default function SwitchScreen({ children }: PropsWithChildren) {
   };
 
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      variants={animate}
-      transition={{ duration: 0.2, ease: 'easeInOut' }}
-    >
-      {children}
-    </motion.div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={animate}
+        transition={{ duration: 0.2, ease: 'easeInOut' }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
   );
 }

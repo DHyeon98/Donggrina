@@ -32,11 +32,9 @@ export default function App({ Component, pageProps }: AppProps) {
             <main id="__container" ref={containerRef}>
               <Header router={router} />
               {isDragging && <Spinner />}
-              {/* <AnimatePresence mode="wait"> */}
               <div key={router.route}>
                 <Component {...pageProps} key={router.route} />
               </div>
-              {/* </AnimatePresence> */}
               {isNav(router) && <Nav />}
             </main>
           </BackGround>

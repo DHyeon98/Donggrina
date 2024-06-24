@@ -2,15 +2,11 @@ import axios, { AxiosInstance } from 'axios';
 import { getCookie, setCookie, deleteCookie } from 'cookies-next';
 import { reissuanceAt } from './auth';
 
-const token = getCookie('AccessToken');
-
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
   },
-  withCredentials: true,
 });
 
 export const axiosFileInstance = axios.create({
@@ -23,16 +19,16 @@ export const axiosFileInstance = axios.create({
 let isRefreshing = false;
 
 const setupInterceptors = (instance: AxiosInstance) => {
-  // instance.interceptors.request.use(
-  //   (config) => {
-  //     const token = getCookie('AccessToken');
-  //     if (token) {
-  //       config.headers['Authorization'] = `Bearer ${token}`;
-  //     }
-  //     return config;
-  //   },
-  //   (error) => Promise.reject(error),
-  // );
+  instance.interceptors.request.use(
+    (config) => {
+      const token = getCookie('AccessToken');
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error),
+  );
 
   instance.interceptors.response.use(
     (response) => response,

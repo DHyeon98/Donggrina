@@ -7,8 +7,11 @@ import { deleteCookie, getCookie } from 'cookies-next';
 
 export default function Family() {
   console.log(getCookie('AccessToken'));
+  function deleteCookies(name: string) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
   const handleDelete = () => {
-    deleteCookie('AccessToken');
+    deleteCookies('AccessToken');
     console.log('a');
   };
   return (

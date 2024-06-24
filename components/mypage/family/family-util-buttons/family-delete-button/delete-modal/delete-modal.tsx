@@ -15,8 +15,8 @@ export default function DeleteModal({ Modal, handleModal, isOpen }: ModalType) {
   const handleDelete = async () => {
     try {
       await myFamilyApi.myFamilyDelete();
-      deleteCookie('accessToken');
-      deleteCookie('refreshToken');
+      deleteCookie('AccessToken');
+      deleteCookie('RefreshToken');
       router.push('/');
     } catch {
       console.log('에러');

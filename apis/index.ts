@@ -7,6 +7,7 @@ export const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 export const axiosFileInstance = axios.create({
@@ -14,6 +15,7 @@ export const axiosFileInstance = axios.create({
   headers: {
     'Content-Type': 'multipart/form-data',
   },
+  withCredentials: true,
 });
 
 let isRefreshing = false;

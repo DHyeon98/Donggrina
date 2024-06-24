@@ -33,7 +33,7 @@ export default function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.nextUrl));
     }
   }
-  // -----------------------------------------------------------------------
+  // ------------------------------------------------------------------------
 
   // 로그인 상태일 때 접근 불가
   if (hasCookie && isPublicPage) {

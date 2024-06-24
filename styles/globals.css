@@ -26,9 +26,9 @@ button {
 
 html,
 body {
-  overflow-y: hidden;
   background-color: #e7fbe9;
   font-weight: 500;
+  overflow: hidden;
 }
 
 #__container {

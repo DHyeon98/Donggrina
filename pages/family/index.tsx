@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import FamilyDiary from '@/components/family/diary/family-diary';
 import FamilyGrowth from '@/components/family/growth/family-growth';
 import FamilySchedule from '@/components/family/schedule/family-schedule';
-import { deleteCookie, getCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 
 export default function Family() {
   console.log(getCookie('AccessToken'));

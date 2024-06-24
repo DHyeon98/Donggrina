@@ -22,6 +22,7 @@ const setupInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.request.use(
     (config) => {
       const token = getCookie('AccessToken');
+      console.log('Request Interceptor - Token:', token);
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
       }

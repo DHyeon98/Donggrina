@@ -36,7 +36,7 @@ export default function usePullReload({ queryClient, containerRef }: UsePullRelo
     };
 
     const handleMouseUp = () => {
-      if (distance > 80) {
+      if (distance >= 80) {
         queryClient.invalidateQueries();
       }
       isDragging = false;
